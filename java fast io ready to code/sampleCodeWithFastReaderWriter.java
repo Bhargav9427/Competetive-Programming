@@ -1,5 +1,3 @@
-package circuits;
-
 import java.util.*;
 import java.io.*;
 
@@ -12,7 +10,9 @@ public class sampleCodeWithFastReaderWriter {
     new Thread(null, null, "Thread 1", 1 << 27) {
       public void run() {
         try {
+          setup();
           solve();
+          closeResources();
         } catch (Exception e) {
           e.printStackTrace();
           System.exit(1);
@@ -22,12 +22,10 @@ public class sampleCodeWithFastReaderWriter {
   }
 
   private static void solve() throws IOException{
-    scan = new FastReader();
-    pw = new PrintWriter(System.out, false); // set auto flush to true if you want to directly flush to the output stream.
     int n = ni();
+    pl(n);
     int x = ni();
-    pw.flush();
-    pw.close();
+    pl(x);
   }
 
   static int ni() throws IOException {
@@ -269,4 +267,16 @@ public class sampleCodeWithFastReaderWriter {
       din.close();
     }
   }
+
+  private static void setup() {
+    scan = new FastReader();
+    pw = new PrintWriter(System.out, false); // set auto flush to true if you want to directly flush to the output stream.
+  }
+
+  private static void closeResources() throws IOException {
+    pw.flush();
+    pw.close();
+    scan.close();
+  }
+
 }
