@@ -1,9 +1,11 @@
+//package codeforces;
 import java.util.*;
 import java.io.*;
 
 public class sampleCodeWithFastReaderWriter {
   static FastReader scan;
   static PrintWriter pw;
+  static int count = 0;
 
   public static void main(String[] args) {
 
@@ -22,22 +24,40 @@ public class sampleCodeWithFastReaderWriter {
   }
 
   private static void solve() throws IOException{
-    int n = ni();
-    pl(n);
-    int x = ni();
-    pl(x);
+    int t = ni();
+    //Code for faster IO.
+    String s = ns();
+    pl(s);
   }
 
+  static String ns() throws IOException {
+    return scan.readString();        // To read the next string upto space
+    //return scan.nextLine();        // To read the line upto enter.
+  }
+
+
   static int ni() throws IOException {
-    return scan.nextInt();
+    return scan.ni();
   }
 
   static long nl() throws IOException {
-    return scan.nextLong();
+    return scan.nl();
   }
 
-  static double nd() throws IOException {
-    return scan.nextDouble();
+  static long[] nla(int n) throws IOException {
+    long []data = new long[n];
+    for (int i = 0; i < n; i++) {
+      data[i] = nl();
+    }
+    return data;
+  }
+
+  static int[] nia(int n) throws IOException {
+    int []data = new int[n];
+    for (int i = 0; i < n; i++) {
+      data[i] = ni();
+    }
+    return data;
   }
 
   static void pl() {
@@ -56,56 +76,49 @@ public class sampleCodeWithFastReaderWriter {
     pw.print(sb);
   }
 
-  static void pa(String arrayName, Object arr[]) {
-    pl(arrayName + " : ");
+  static void pa(Object arr[]) {
     for (Object o : arr) {
       p(o);
     }
     pl();
   }
 
-  static void pa(String arrayName, int arr[]) {
-    pl(arrayName + " : ");
+  static void pa(int arr[]) {
     for (int o : arr) {
       p(o);
     }
     pl();
   }
 
-  static void pa(String arrayName, long arr[]) {
-    pl(arrayName + " : ");
+  static void pa(long arr[]) {
     for (long o : arr) {
       p(o);
     }
     pl();
   }
 
-  static void pa(String arrayName, double arr[]) {
-    pl(arrayName + " : ");
+  static void pa(double arr[]) {
     for (double o : arr) {
       p(o);
     }
     pl();
   }
 
-  static void pa(String arrayName, char arr[]) {
-    pl(arrayName + " : ");
+  static void pa(char arr[]) {
     for (char o : arr) {
       p(o);
     }
     pl();
   }
 
-  static void pa(String listName, List list) {
-    pl(listName + " : ");
+  static void pa(List list) {
     for (Object o : list) {
       p(o);
     }
     pl();
   }
 
-  static void pa(String arrayName, Object[][] arr) {
-    pl(arrayName + " : ");
+  static void pa(Object[][] arr) {
     for (int i = 0; i < arr.length; ++i) {
       for (Object o : arr[i]) {
         p(o);
@@ -114,8 +127,7 @@ public class sampleCodeWithFastReaderWriter {
     }
   }
 
-  static void pa(String arrayName, int[][] arr) {
-    pl(arrayName + " : ");
+  static void pa(int[][] arr) {
     for (int i = 0; i < arr.length; ++i) {
       for (int o : arr[i]) {
         p(o);
@@ -124,8 +136,7 @@ public class sampleCodeWithFastReaderWriter {
     }
   }
 
-  static void pa(String arrayName, long[][] arr) {
-    pl(arrayName + " : ");
+  static void pa(long[][] arr) {
     for (int i = 0; i < arr.length; ++i) {
       for (long o : arr[i]) {
         p(o);
@@ -134,8 +145,7 @@ public class sampleCodeWithFastReaderWriter {
     }
   }
 
-  static void pa(String arrayName, char[][] arr) {
-    pl(arrayName + " : ");
+  static void pa( char[][] arr) {
     for (int i = 0; i < arr.length; ++i) {
       for (char o : arr[i]) {
         p(o);
@@ -144,8 +154,7 @@ public class sampleCodeWithFastReaderWriter {
     }
   }
 
-  static void pa(String arrayName, double[][] arr) {
-    pl(arrayName + " : ");
+  static void pa(double[][] arr) {
     for (int i = 0; i < arr.length; ++i) {
       for (double o : arr[i]) {
         p(o);
@@ -155,121 +164,119 @@ public class sampleCodeWithFastReaderWriter {
   }
 
   static class FastReader {
-    final private int BUFFER_SIZE = 1 << 16;
-    private DataInputStream din;
-    private byte[] buffer;
-    private int bufferPointer, bytesRead;
+    private final InputStream stream;
+    private final byte[] buf = new byte[8192];
+    private int curChar, snumChars;
 
-    public FastReader() {
-      din = new DataInputStream(System.in);
-      buffer = new byte[BUFFER_SIZE];
-      bufferPointer = bytesRead = 0;
+    public FastReader(InputStream stream) {
+      this.stream = stream;
     }
 
-    public FastReader(String file_name) throws IOException {
-      din = new DataInputStream(new FileInputStream(file_name));
-      buffer = new byte[BUFFER_SIZE];
-      bufferPointer = bytesRead = 0;
-    }
-
-    public String readLine() throws IOException {
-      byte[] buf = new byte[1000009];  //Line length
-      int cnt = 0, c;
-      while ((c = read()) != -1) {
-        if (c == '\n') {
-          break;
+    public int read() {
+      if (snumChars == -1)
+        throw new InputMismatchException();
+      if (curChar >= snumChars) {
+        curChar = 0;
+        try {
+          snumChars = stream.read(buf);
+        } catch (IOException e) {
+          throw new InputMismatchException();
         }
-        buf[cnt++] = (byte) c;
+        if (snumChars <= 0)
+          return -1;
       }
-      return new String(buf, 0, cnt);
+      return buf[curChar++];
     }
 
-    public int nextInt() throws IOException {
-      int ret = 0;
-      byte c = read();
-      while (c <= ' ') {
+    public int ni() {
+      int c = read();
+      while (isSpaceChar(c)) {
         c = read();
       }
-      boolean neg = (c == '-');
-      if (neg) {
+      int sgn = 1;
+      if (c == '-') {
+        sgn = -1;
         c = read();
       }
+      int res = 0;
       do {
-        ret = ret * 10 + c - '0';
-      } while ((c = read()) >= '0' && c <= '9');
-      if (neg) {
-        return -ret;
-      }
-      return ret;
+        res *= 10;
+        res += c - '0';
+        c = read();
+      } while (!isSpaceChar(c));
+      return res * sgn;
     }
 
-    public long nextLong() throws IOException {
-      long ret = 0;
-      byte c = read();
-      while (c <= ' ') {
+    public long nl() {
+      int c = read();
+      while (isSpaceChar(c)) {
         c = read();
       }
-      boolean neg = (c == '-');
-      if (neg) {
+      int sgn = 1;
+      if (c == '-') {
+        sgn = -1;
         c = read();
       }
+      long res = 0;
       do {
-        ret = ret * 10 + c - '0';
-      } while ((c = read()) >= '0' && c <= '9');
-      if (neg) {
-        return -ret;
-      }
-      return ret;
+        res *= 10;
+        res += c - '0';
+        c = read();
+      } while (!isSpaceChar(c));
+      return res * sgn;
     }
 
-    public double nextDouble() throws IOException {
-      double ret = 0, div = 1;
-      byte c = read();
-      while (c <= ' ') {
+    public int[] nextIntArray(int n) {
+      int a[] = new int[n];
+      for (int i = 0; i < n; i++) {
+        a[i] = ni();
+      }
+      return a;
+    }
+
+    public String readString() {
+      int c = read();
+      while (isSpaceChar(c)) {
         c = read();
       }
-      boolean neg = (c == '-');
-      if (neg) {
-        c = read();
-      }
+      StringBuilder res = new StringBuilder();
       do {
-        ret = ret * 10 + c - '0';
-      } while ((c = read()) >= '0' && c <= '9');
-      if (c == '.') {
-        while ((c = read()) >= '0' && c <= '9') {
-          ret += (c - '0') / (div *= 10);
-        }
-      }
-      if (neg) {
-        return -ret;
-      }
-      return ret;
+        res.appendCodePoint(c);
+        c = read();
+      } while (!isSpaceChar(c));
+      return res.toString();
     }
 
-    private void fillBuffer() throws IOException {
-      bytesRead = din.read(buffer, bufferPointer = 0, BUFFER_SIZE);
-      if (bytesRead == -1) {
-        buffer[0] = -1;
-      }
+    public String nextLine() {
+      int c = read();
+      while (isSpaceChar(c))
+        c = read();
+      StringBuilder res = new StringBuilder();
+      do {
+        res.appendCodePoint(c);
+        c = read();
+      } while (!isEndOfLine(c));
+      return res.toString();
     }
 
-    private byte read() throws IOException {
-      if (bufferPointer == bytesRead) {
-        fillBuffer();
-      }
-      return buffer[bufferPointer++];
+    public boolean isSpaceChar(int c) {
+      return c == ' ' || c == '\n' || c == '\r' || c == '\t' || c == -1;
+    }
+
+    private boolean isEndOfLine(int c) {
+      return c == '\n' || c == '\r' || c == -1;
     }
 
     public void close() throws IOException {
-      if (din == null) {
+      if (stream == null) {
         return;
       }
-      din.close();
+      stream.close();
     }
   }
 
   private static void setup() {
-    scan = new FastReader();
+    scan = new FastReader(System.in);
     pw = new PrintWriter(System.out, false); // set auto flush to true if you want to directly flush to the output stream.
   }
 
