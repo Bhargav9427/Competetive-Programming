@@ -1,11 +1,16 @@
 //package codeforces;
+
 import java.util.*;
 import java.io.*;
+//import javafx.util.Pair;
 
-public class sampleCodeWithFastReaderWriter {
+class sampleCodeWithFastReaderWriter {
+
   static FastReader scan;
-  static PrintWriter pw;
+  //static PrintWriter pw;
+  static OutputWriter pw;
   static int count = 0;
+  static final int mod = 1000000007;
 
   public static void main(String[] args) {
 
@@ -23,16 +28,13 @@ public class sampleCodeWithFastReaderWriter {
     }.start();
   }
 
-  private static void solve() throws IOException{
+  private static void solve() throws IOException {
     int t = ni();
-    //Code for faster IO.
-    String s = ns();
-    pl(s);
+
   }
 
   static String ns() throws IOException {
-    return scan.readString();        // To read the next string upto space
-    //return scan.nextLine();        // To read the line upto enter.
+    return scan.readString();
   }
 
 
@@ -45,7 +47,7 @@ public class sampleCodeWithFastReaderWriter {
   }
 
   static long[] nla(int n) throws IOException {
-    long []data = new long[n];
+    long[] data = new long[n];
     for (int i = 0; i < n; i++) {
       data[i] = nl();
     }
@@ -53,117 +55,15 @@ public class sampleCodeWithFastReaderWriter {
   }
 
   static int[] nia(int n) throws IOException {
-    int []data = new int[n];
+    int[] data = new int[n];
     for (int i = 0; i < n; i++) {
       data[i] = ni();
     }
     return data;
   }
 
-  static void pl() {
-    pw.println();
-  }
-
-  static void p(Object o) {
-    pw.print(o + " ");
-  }
-
-  static void pl(Object o) {
-    pw.println(o);
-  }
-
-  static void psb(StringBuilder sb) {
-    pw.print(sb);
-  }
-
-  static void pa(Object arr[]) {
-    for (Object o : arr) {
-      p(o);
-    }
-    pl();
-  }
-
-  static void pa(int arr[]) {
-    for (int o : arr) {
-      p(o);
-    }
-    pl();
-  }
-
-  static void pa(long arr[]) {
-    for (long o : arr) {
-      p(o);
-    }
-    pl();
-  }
-
-  static void pa(double arr[]) {
-    for (double o : arr) {
-      p(o);
-    }
-    pl();
-  }
-
-  static void pa(char arr[]) {
-    for (char o : arr) {
-      p(o);
-    }
-    pl();
-  }
-
-  static void pa(List list) {
-    for (Object o : list) {
-      p(o);
-    }
-    pl();
-  }
-
-  static void pa(Object[][] arr) {
-    for (int i = 0; i < arr.length; ++i) {
-      for (Object o : arr[i]) {
-        p(o);
-      }
-      pl();
-    }
-  }
-
-  static void pa(int[][] arr) {
-    for (int i = 0; i < arr.length; ++i) {
-      for (int o : arr[i]) {
-        p(o);
-      }
-      pl();
-    }
-  }
-
-  static void pa(long[][] arr) {
-    for (int i = 0; i < arr.length; ++i) {
-      for (long o : arr[i]) {
-        p(o);
-      }
-      pl();
-    }
-  }
-
-  static void pa( char[][] arr) {
-    for (int i = 0; i < arr.length; ++i) {
-      for (char o : arr[i]) {
-        p(o);
-      }
-      pl();
-    }
-  }
-
-  static void pa(double[][] arr) {
-    for (int i = 0; i < arr.length; ++i) {
-      for (double o : arr[i]) {
-        p(o);
-      }
-      pl();
-    }
-  }
-
   static class FastReader {
+
     private final InputStream stream;
     private final byte[] buf = new byte[8192];
     private int curChar, snumChars;
@@ -173,8 +73,9 @@ public class sampleCodeWithFastReaderWriter {
     }
 
     public int read() {
-      if (snumChars == -1)
+      if (snumChars == -1) {
         throw new InputMismatchException();
+      }
       if (curChar >= snumChars) {
         curChar = 0;
         try {
@@ -182,8 +83,9 @@ public class sampleCodeWithFastReaderWriter {
         } catch (IOException e) {
           throw new InputMismatchException();
         }
-        if (snumChars <= 0)
+        if (snumChars <= 0) {
           return -1;
+        }
       }
       return buf[curChar++];
     }
@@ -249,8 +151,9 @@ public class sampleCodeWithFastReaderWriter {
 
     public String nextLine() {
       int c = read();
-      while (isSpaceChar(c))
+      while (isSpaceChar(c)) {
         c = read();
+      }
       StringBuilder res = new StringBuilder();
       do {
         res.appendCodePoint(c);
@@ -275,13 +178,46 @@ public class sampleCodeWithFastReaderWriter {
     }
   }
 
+  static class OutputWriter {
+    private final PrintWriter writer;
+
+    public OutputWriter(OutputStream outputStream, boolean autoFlush) {
+      writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(outputStream)), autoFlush);
+    }
+
+    public OutputWriter(Writer writer) {
+      this.writer = new PrintWriter(writer);
+    }
+
+    public void print(Object...objects) {
+      for (int i = 0; i < objects.length; i++) {
+        if (i != 0)
+          writer.print(' ');
+        writer.print(objects[i]);
+      }
+    }
+
+    public void printLine(Object...objects) {
+      print(objects);
+      writer.println();
+    }
+
+    public void printLine() {
+      writer.println();
+    }
+
+    public void close() {
+      writer.close();
+    }
+  }
+
   private static void setup() {
     scan = new FastReader(System.in);
-    pw = new PrintWriter(System.out, false); // set auto flush to true if you want to directly flush to the output stream.
+    pw= new OutputWriter(System.out, false); // set auto flush to true if you want to directly flush to the output stream.
   }
 
   private static void closeResources() throws IOException {
-    pw.flush();
+    //pw.flush();
     pw.close();
     scan.close();
   }
